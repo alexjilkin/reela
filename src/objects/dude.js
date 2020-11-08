@@ -1,14 +1,14 @@
 import keyboard from '../input.js'
+import {setPosition} from './camera.js'
 
 let container;
 let dude;
-let text
 
-function physics(block) {
-    if (block.position.y < 380) {
-        block.vy += 0.3;
+function physics(blocks) {
+    if (container.position.y < 380) {
+        container.vy += 0.3;
     } else {
-        block.vy = 0;
+        container.vy = 0;
     }
 }
 
@@ -36,14 +36,11 @@ function movement() {
     up.press = () => {
         container.vy = -9;
     };
+
+    setPosition(container.position.x, container.position.y)
 }
 
-let style = new PIXI.TextStyle({
-    fontFamily: 'ailerons',
-    fontSize: 18,
-    fill: "white",
-  
-  });
+
 
 export function init() {
     container = new PIXI.Container()
@@ -52,22 +49,20 @@ export function init() {
     container.vy = 0.00;
 
     dude = new PIXI.Sprite(PIXI.loader.resources["../assets/dude.png"].texture);
-    dude.scale.x = 0.1 
+    dude.scale.x = 0.1
     dude.scale.y = 0.1
-
-    //text = new PIXI.Text("Oh boy\nI've missed the matrix...", style);
-
     container.addChild(dude)
-    //container.addChild(text)
     
     return container;
 }
 
-export function update() {
+export const getClip = () => container
+
+export function update(clips) {
     container.x += container.vx;
     container.y += container.vy;
 
     movement()
-    physics(container)
+    physics(clips)
 }
 

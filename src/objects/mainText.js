@@ -1,6 +1,6 @@
-let subject;
+import TypingText from './TypingText.js'
 
-const value = 'Welcome to Evening City... \nJack in the matrix'
+let subject;
 
 export function init() {
     let style = new PIXI.TextStyle({
@@ -9,20 +9,12 @@ export function init() {
         fill: "white",
     });
 
-    subject = new PIXI.Text('', style)
+    subject = new TypingText('Welcome to Evening City... \nPress Enter near a project to jack in the matrix', 
+        3,  style)
     subject.position.set(10, 10)
     return subject
 }
 
-let i = 0;
-let letters = 0;
-
 export function update() {
-    i++
-
-    if (i % 5 === 0) {
-        letters++
-        
-        subject.text = value.slice(0, letters)
-    }
+    subject.update()
 }

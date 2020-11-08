@@ -1,8 +1,14 @@
 import * as dude from './objects/dude.js'
 import * as background from './objects/background.js'
 import * as mainText from './objects/mainText.js'
+import * as theMatrix from './objects/theMatrix.js'
+import * as floor from './objects/floor.js'
 
-//Create a Pixi Application
+import {getPosition} from './objects/camera.js'
+
+const width = 900
+const height = 500;
+
 let app = new PIXI.Application({ 
     width: 900, 
     height: 500,                       
@@ -12,26 +18,76 @@ let app = new PIXI.Application({
   }
 );
 
-const clips = [background, dude, mainText]
+let worldContainer;
+let absoluteContainer;
+let cameraBoundContainer;
+let backgroundContainer;
+let mainPlayerContainer;
+
+const backgroundClips = [background]
+const absoluteClips = [mainText]
+const cameraClips = [theMatrix, floor]
+const mainPlayer = dude;
+
+let blur
 
 document.getElementById('container').appendChild(app.view);
 
 PIXI.loader
   .add("../assets/buildings-bg.png")
   .add("../assets/dude.png")
+  .add("../assets/floor.png")
   .load(setup);
 
 function setup() {
+  backgroundContainer = new PIXI.Container()
+  backgroundContainer.addChild(background.init())
+  cameraBoundContainer = new PIXI.Container()
+  absoluteContainer = new PIXI.Container()
 
-  clips.forEach(({init}) => {
-    app.stage.addChild(init());
+  cameraClips.forEach(({init}) => {
+    cameraBoundContainer.addChild(init())
   })
-  
+
+  absoluteClips.forEach(({init}) => {
+    absoluteContainer.addChild(init())
+  })
+
+  mainPlayerContainer = new PIXI.Container()
+  mainPlayerContainer.addChild(mainPlayer.init())
+
+  worldContainer = new PIXI.Container()
+  worldContainer.addChild(backgroundContainer, cameraBoundContainer, absoluteContainer, mainPlayerContainer)
+  app.stage.addChild(worldContainer);
   app.ticker.add(delta => updateLoop(delta))
 }
 
+function redirectToProject(){
+  blur = new PIXI.filters.BlurFilter(0, 1);
+  worldContainer.filters = [blur]
+  setTimeout(() => {
+    window.location = 'https://alexjilkin.github.io/jsynth/'
+  }, 500)
+}
+
 function updateLoop() {
+  const clips = [...backgroundClips, ...absoluteClips, ...cameraClips]
+
   clips.forEach(({update = () => {}}) => {
-    update()
+    update(mainPlayer.getClip(), redirectToProject)
   })
+
+  mainPlayer.update()
+
+  const newX = (width / 2) - getPosition().x
+  const newY = (height / 2) - getPosition().y
+
+  cameraBoundContainer.position.set(newX, newY)
+  mainPlayerContainer.position.set(newX, newY)
+
+  backgroundContainer.position.set(-(getPosition().x / 20), -(getPosition().y / 20))
+
+  if (blur) {
+    blur.blur = blur.blur + 0.1;
+  }
 }
