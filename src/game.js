@@ -34,9 +34,9 @@ let blur
 document.getElementById('container').appendChild(app.view);
 
 PIXI.loader
-  .add("../assets/buildings-bg.png")
-  .add("../assets/dude.png")
-  .add("../assets/floor.png")
+  .add("assets/buildings-bg.png")
+  .add("assets/dude.png")
+  .add("assets/floor.png")
   .load(setup);
 
 function setup() {

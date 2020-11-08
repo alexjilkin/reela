@@ -1,7 +1,7 @@
 let floor;
 
 export function init() {
-    floor = new PIXI.Sprite(PIXI.loader.resources["../assets/floor.png"].texture);
+    floor = new PIXI.Sprite(PIXI.loader.resources["assets/floor.png"].texture);
 
     floor.scale.x = 3
     floor.scale.y = 3

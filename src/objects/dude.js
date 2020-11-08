@@ -48,7 +48,7 @@ export function init() {
     container.vx = 0.00;
     container.vy = 0.00;
 
-    dude = new PIXI.Sprite(PIXI.loader.resources["../assets/dude.png"].texture);
+    dude = new PIXI.Sprite(PIXI.loader.resources["assets/dude.png"].texture);
     dude.scale.x = 0.1
     dude.scale.y = 0.1
     container.addChild(dude)
