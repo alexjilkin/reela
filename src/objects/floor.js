@@ -14,3 +14,4 @@ export function init() {
 export function update() {
     
 }
+export const getClip = () => floor

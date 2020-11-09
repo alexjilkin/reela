@@ -18,3 +18,4 @@ export function init() {
 export function update() {
     subject.update()
 }
+export const getClip = () => subject

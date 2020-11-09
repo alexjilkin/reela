@@ -3,38 +3,54 @@ import {setPosition} from './camera.js'
 
 let container;
 let dude;
+let dudeCollided;
+let isMoving;
 
-function physics(blocks) {
-    if (container.position.y < 380) {
-        container.vy += 0.3;
+const dudeHeight = 100;
+const a = 0.3;
+
+function physics(isColliding) {
+    if (!dudeCollided) {
+        container.vy += a;
     } else {
         container.vy = 0;
     }
+        
+
 }
 
-function movement() {
+function movement(isColliding) {
     let left = keyboard("ArrowLeft"),
     up = keyboard("ArrowUp"),
     right = keyboard("ArrowRight"),
     down = keyboard("ArrowDown");
 
+    
     right.press = () => {
+        isMoving = true;
         container.vx = 5;
+        
+        container.scale.x = 1
     };
+
     right.release = () => {
+        isMoving = false;
         container.vx = 0;
     }
 
     left.press = () => {
+        isMoving = true;
         container.vx = -5;
+        container.scale.x = -1
     };
 
     left.release = () => {
+        isMoving = false;
         container.vx = 0;
     }
     
     up.press = () => {
-        container.vy = -9;
+        container.vy = -10;
     };
 
     setPosition(container.position.x, container.position.y)
@@ -49,8 +65,12 @@ export function init() {
     container.vy = 0.00;
 
     dude = new PIXI.Sprite(PIXI.loader.resources["assets/dude.png"].texture);
-    dude.scale.x = 0.1
-    dude.scale.y = 0.1
+    const ratio = dude.width / dude.height
+
+    dude.height = dudeHeight
+    dude.width = dude.height / ratio
+    //dude.position.set(dude.width / 2, dude.height / 2)
+    dude.anchor.set(0.5, 0)
     container.addChild(dude)
     
     return container;
@@ -58,11 +78,21 @@ export function init() {
 
 export const getClip = () => container
 
-export function update(clips) {
+export function update({isColliding}) {
     container.x += container.vx;
     container.y += container.vy;
 
-    movement()
-    physics(clips)
+    movement(isColliding)
+    physics(isColliding)
+
+    if (isColliding(container)) {
+        dudeCollided = true
+    } else {
+        dudeCollided = false
+    }
+
+    if (dudeCollided) {
+        container.y -= container.vy
+    }
 }
 

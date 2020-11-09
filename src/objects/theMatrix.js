@@ -38,7 +38,8 @@ export function init() {
     return container;
 }
 
-export function update(mainPlayer, redirectToProject) {
+export function update(mainPlayer, {redirectToProject}) {
     effect(mainPlayer, redirectToProject)
 }
 
+export const getClip = () => container

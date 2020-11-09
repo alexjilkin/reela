@@ -5,6 +5,7 @@ import * as theMatrix from './objects/theMatrix.js'
 import * as floor from './objects/floor.js'
 
 import {getPosition} from './objects/camera.js'
+import {isClipsCollide} from './utils/index.js'
 
 const width = 900
 const height = 500;
@@ -70,14 +71,17 @@ function redirectToProject(){
   }, 500)
 }
 
+function isCollidingWithWorld(testClip) {
+  return cameraClips.some(clip => isClipsCollide(testClip, clip.getClip()))
+}
 function updateLoop() {
   const clips = [...backgroundClips, ...absoluteClips, ...cameraClips]
 
   clips.forEach(({update = () => {}}) => {
-    update(mainPlayer.getClip(), redirectToProject)
+    update(mainPlayer.getClip(), {redirectToProject, isColliding: isCollidingWithWorld})
   })
 
-  mainPlayer.update()
+  mainPlayer.update({redirectToProject, isColliding: isCollidingWithWorld})
 
   const newX = (width / 2) - getPosition().x
   const newY = (height / 2) - getPosition().y
