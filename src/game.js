@@ -1,7 +1,7 @@
 import * as dude from './objects/dude.js'
 import * as background from './objects/background.js'
 import * as mainText from './objects/mainText.js'
-import * as theMatrix from './objects/theMatrix.js'
+import * as projects from './objects/projects.js'
 import * as floor from './objects/floor.js'
 
 import {getPosition} from './objects/camera.js'
@@ -27,7 +27,7 @@ let mainPlayerContainer;
 
 const backgroundClips = [background]
 const absoluteClips = [mainText]
-const cameraClips = [theMatrix, floor]
+const cameraClips = [projects, floor]
 const mainPlayer = dude;
 
 let blur
@@ -63,11 +63,11 @@ function setup() {
   app.ticker.add(delta => updateLoop(delta))
 }
 
-function redirectToProject(){
+function redirectToProject(url){
   blur = new PIXI.filters.BlurFilter(0, 1);
   worldContainer.filters = [blur]
   setTimeout(() => {
-    window.location = 'https://alexjilkin.github.io/jsynth/'
+    window.location = url
   }, 500)
 }
 

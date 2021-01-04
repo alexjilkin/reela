@@ -9,7 +9,7 @@ export function init() {
         fill: "white",
     });
 
-    subject = new TypingText('Welcome to Evening City... \nPress Enter near a project to jack in the matrix', 
+    subject = new TypingText('Welcome to Evening City... \nPress Enter near a project to open it', 
         3,  style)
     subject.position.set(10, 10)
     return subject
