@@ -9,14 +9,12 @@ let isMoving;
 const dudeHeight = 100;
 const a = 0.3;
 
-function physics(isColliding) {
+function physics() {
     if (!dudeCollided) {
         container.vy += a;
     } else {
         container.vy = 0;
     }
-        
-
 }
 
 function movement(isColliding) {
@@ -50,6 +48,7 @@ function movement(isColliding) {
     }
     
     up.press = () => {
+        dudeCollided = false
         container.vy = -10;
     };
 
@@ -63,13 +62,12 @@ export function init() {
     
     container.vx = 0.00;
     container.vy = 0.00;
-
+    container.position.set(100, 200)
     dude = new PIXI.Sprite(PIXI.loader.resources["assets/dude.png"].texture);
     const ratio = dude.width / dude.height
 
     dude.height = dudeHeight
     dude.width = dude.height / ratio
-    //dude.position.set(dude.width / 2, dude.height / 2)
     dude.anchor.set(0.5, 0)
     container.addChild(dude)
     
