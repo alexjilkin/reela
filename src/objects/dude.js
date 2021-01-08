@@ -6,8 +6,10 @@ let dude;
 let dudeCollided;
 let isMoving;
 
-const dudeHeight = 100;
+const dudeHeight = 60;
 const a = 0.3;
+let dudeImages = ["assets/dino/tile001.png","assets/dino/tile002.png","assets/dino/tile003.png","assets/dino/tile004.png", "assets/dino/tile005.png",  "assets/dino/tile006.png",  "assets/dino/tile006.png"];
+let dudeArray = [];
 
 function physics() {
     if (!dudeCollided) {
@@ -22,29 +24,33 @@ function movement(isColliding) {
     up = keyboard("ArrowUp"),
     right = keyboard("ArrowRight"),
     down = keyboard("ArrowDown");
-
     
     right.press = () => {
         isMoving = true;
         container.vx = 5;
-        
+
         container.scale.x = 1
+
+        dude.play()
     };
 
     right.release = () => {
         isMoving = false;
         container.vx = 0;
+        dude.stop()
     }
 
     left.press = () => {
         isMoving = true;
         container.vx = -5;
         container.scale.x = -1
+        dude.play()
     };
 
     left.release = () => {
         isMoving = false;
         container.vx = 0;
+        dude.stop()
     }
     
     up.press = () => {
@@ -63,7 +69,15 @@ export function init() {
     container.vx = 0.00;
     container.vy = 0.00;
     container.position.set(100, 200)
-    dude = new PIXI.Sprite(PIXI.loader.resources["assets/dude.png"].texture);
+
+    for (let i=0; i < dudeImages.length; i++)
+    {
+        let texture = PIXI.Texture.from(dudeImages[i]);
+        dudeArray.push(texture);
+    };
+
+    dude = new PIXI.AnimatedSprite(dudeArray);
+    dude.animationSpeed = 0.3
     const ratio = dude.width / dude.height
 
     dude.height = dudeHeight

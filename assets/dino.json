@@ -1,0 +1,20 @@
+{"frames": {
+
+"DinoSprites - tard.png":
+{
+	"frame": {"x":0,"y":0,"w":576,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":576,"h":24},
+	"sourceSize": {"w":576,"h":24}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "dino.png",
+	"format": "RGBA8888",
+	"size": {"w":576,"h":24},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:d1de82da04d73bb4815c5344063bc8ae:a1358bd3b8e9b424d5769162811ac936:604dd05d6aaab271297d13217355623b$"
+}
+}
