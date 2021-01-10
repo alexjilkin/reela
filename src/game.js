@@ -27,7 +27,8 @@ let mainPlayerContainer;
 
 const backgroundClips = [background]
 const absoluteClips = [mainText]
-const cameraClips = [projects, floor]
+const cameraClipsCollide = [floor]
+const cameraClips = [projects]
 const mainPlayer = dude;
 
 let blur
@@ -46,7 +47,9 @@ function setup() {
   cameraBoundContainer = new PIXI.Container()
   absoluteContainer = new PIXI.Container()
 
-  cameraClips.forEach(({init}) => {
+  const allCameraClips = [...cameraClips, ...cameraClipsCollide]
+
+  allCameraClips.forEach(({init}) => {
     cameraBoundContainer.addChild(init())
   })
 
@@ -68,11 +71,11 @@ function redirectToProject(url){
   worldContainer.filters = [blur]
   setTimeout(() => {
     window.location = url
-  }, 500)
+  }, 250)
 }
 
 function isCollidingWithWorld(testClip) {
-  return cameraClips.some(clip => isClipsCollide(testClip, clip.getClip()))
+  return cameraClipsCollide.some(clip => isClipsCollide(testClip, clip.getClip()))
 }
 function updateLoop() {
   const clips = [...backgroundClips, ...absoluteClips, ...cameraClips]
