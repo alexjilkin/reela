@@ -1,5 +1,6 @@
 export function isClipsCollide(clip1, clip2) {
-  const clip1Bounds = clip1.getBounds()
+  const b = clip1.getBounds()
+  const clip1Bounds = new PIXI.Rectangle(b.x + 70, b.y + 70, b.width - 130, b.height - 130)
   const clip2Bounds = clip2.getBounds()
 
   clip1.centerX = clip1Bounds.x + clip1Bounds.width / 2;
