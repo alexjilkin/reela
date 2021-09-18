@@ -2,9 +2,15 @@ import keyboard from '../input.js'
 import {setPosition} from './camera.js'
 
 let container;
-let dudeWalking;
-let dudeJumping;
-let dudeIdle;
+
+const animations = {
+    walking: null,
+    jumping: null,
+    idle: null
+}
+
+let state = 'idle';
+
 let dude;
 let dudeCollided;
 
@@ -35,7 +41,6 @@ function movement(isColliding) {
     down = keyboard("ArrowDown");
     
     right.press = () => {
-        isMoving = true;
         container.vx = 5;
         container.scale.x = 1
 
@@ -49,7 +54,7 @@ function movement(isColliding) {
     }
 
     left.press = () => {
-        isMoving = true;
+       
         container.vx = -5;
         container.scale.x = -1
 
@@ -67,23 +72,40 @@ function movement(isColliding) {
             isInAir = true
             dudeCollided = false
             container.vy = -10 
-            dudeJumping.play()
+            animations.jumping.gotoAndPlay(0)
         }
-        
     };
 
     setPosition(container.position.x, container.position.y)
 }
 
+function setState(newState) {
+    if (state !== newState) {
+        state = newState
+        setAnimation(state)
+    }
+}
+function setAnimation(type) {
+    console.log(type)
+    Object.values(animations).forEach(sprite => {
+        sprite.visible = false;
+        sprite.stop()
+    })
+
+    animations[type].visible = true;
+    animations[type].play()
+}
+
 function startWalking() {
-    dudeWalking.play()
-    dudeWalking.visible = true;
-    dudeIdle.visible = false
+    if(!isMoving) {
+        
+        setState('walking')
+    }
+
+    isMoving = true;
 }
 function stopWalking() {
-    dudeWalking.stop()
-    dudeWalking.visible = false;
-    dudeIdle.visible = true
+    setState('idle')
 }
 
 export function init() {
@@ -111,33 +133,36 @@ export function init() {
     dude = new PIXI.Container();
     
     // Walking Animation
-    dudeWalking = new PIXI.AnimatedSprite(dudeWalkingArray);
-    dudeWalking.animationSpeed = 0.4
-    const ratio = dudeWalking.width / dudeWalking.height
-    dudeWalking.height = dudeHeight
-    dudeWalking.width = dudeHeight / ratio
-    dudeWalking.visible = false;
-    dudeWalking.anchor.set(0.5, 0)
-    dude.addChild(dudeWalking)
+    animations.walking = new PIXI.AnimatedSprite(dudeWalkingArray);
+    animations.walking.animationSpeed = 0.4
+    const ratio =  animations.walking.width /  animations.walking.height
+    animations.walking.height = dudeHeight
+    animations.walking.width = dudeHeight / ratio
+    animations.walking.visible = false;
+    animations.walking.anchor.set(0.35, 0)
+    dude.addChild( animations.walking)
 
     // Jumping animation
-    dudeJumping = new PIXI.AnimatedSprite(dudeJumpArray);
-    dudeJumping.animationSpeed = 0.15
-    const ratio2 = dudeJumping.width / dudeJumping.height
-    dudeJumping.height = dudeHeight
-    dudeJumping.width = dudeHeight / ratio2
-    dudeJumping.visible = false;
-    dudeJumping.anchor.set(0.5, 0)
-    dude.addChild(dudeJumping)
+    animations.jumping = new PIXI.AnimatedSprite(dudeJumpArray);
+    animations.jumping.animationSpeed = 0.15
+    animations.jumping.onLoop = () => {
+        setState('idle')
+    }
+
+    animations.jumping.height = dudeHeight
+    animations.jumping.width = dudeHeight / ratio
+    animations.jumping.visible = false;
+    animations.jumping.anchor.set(0.35, 0)
+    dude.addChild(animations.jumping)
 
     // Idle animation
-    dudeIdle = new PIXI.AnimatedSprite(dudeIdleArray);
-    dudeIdle.anchor.set(0.5, 0)
-    dudeIdle.height = dudeHeight
-    dudeIdle.width = dudeHeight / ratio
-    dudeIdle.animationSpeed = 0.15
-    dudeIdle.play()
-    dude.addChild(dudeIdle)
+    animations.idle = new PIXI.AnimatedSprite(dudeIdleArray);
+    animations.idle.anchor.set(0.35, 0)
+    animations.idle.height = dudeHeight
+    animations.idle.width = dudeHeight / ratio
+    animations.idle.animationSpeed = 0.15
+    animations.idle.play()
+    dude.addChild(animations.idle)
 
     container.addChild(dude)
     
@@ -152,27 +177,24 @@ export function update({isColliding}) {
 
     movement(isColliding)
     physics(isColliding)
-    container.hitArea = new PIXI.Rectangle(container.x + 20, container.y + 20, container.x + 60, container.y + 60);
+    
     if (isColliding(container)) {
         dudeCollided = true
         isInAir = false;
+
+        container.y -= container.vy
     } else {
         dudeCollided = false
     }
 
-    if (dudeCollided) {
-        container.y -= container.vy
-    }
-
     if(isInAir) {
-        dudeJumping.visible = true;
-        dudeWalking.visible = false;
-        dudeIdle.visible = false;
-    } else {
-        dudeJumping.visible = false;
-        dudeJumping.stop();
-        if (!isMoving)
-            dudeIdle.visible = true;
+        setState('jumping')
+    } else if(state === 'jumping') {
+        if (container.vx !== 0) {
+            setState('walking')
+        } else {
+            setState('idle')
+        }
     }
 }
 
