@@ -48,7 +48,7 @@ export function init() {
         projectContainers.push(projectContainer)
     })
     
-    container.position.set(500, 380)
+    container.position.set(300, 380)
 
     return container;
 }
