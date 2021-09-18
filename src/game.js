@@ -12,8 +12,8 @@ const width = 900
 const height = 500;
 
 let app = new PIXI.Application({ 
-    width: 900, 
-    height: 500,                       
+    width: 1200, 
+    height: 650,                       
     antialias: true, 
     transparent: false, 
     resolution: 1
@@ -45,7 +45,12 @@ PIXI.loader
   .add("assets/planets/Baren.png")
   .add("assets/planets/Ice.png")
   .add("assets/planets/Lava.png")
-  .load(setup);
+
+
+planets.lavaImages.forEach(v => PIXI.loader.add(v))
+dude.preload.forEach(v => PIXI.loader.add(v))
+PIXI.loader.load(setup)
+// setTimeout(setup, 1000)
 
 function setup() {
   backgroundLayer1 = new PIXI.Container()

@@ -1,23 +1,38 @@
+import {generatePaths} from '../utils/index.js'
+
 let container;
+const path = 'assets/planets/lava';
+const num = 140
+export let lavaImages = generatePaths(path, num)
 
 export function init() {
-    container = new PIXI.Container();
-    container.width = 1000;
-    container.height = 1000;
-    let planet1 = new PIXI.Sprite(PIXI.loader.resources["assets/planets/Baren.png"].texture);
-    let planet2 = new PIXI.Sprite(PIXI.loader.resources["assets/planets/Ice.png"].texture);
-    let planet3 = new PIXI.Sprite(PIXI.loader.resources["assets/planets/Lava.png"].texture);
+   
+    let lavaTextures = []
+    
+    lavaTextures = lavaImages.map(image => 
+        PIXI.loader.resources[image].texture
+    )
 
-    planet1.position.x = 100;
-    planet1.position.y = 100;
+    container = new PIXI.Container();
+   
+    let planet2 = new PIXI.Sprite(PIXI.loader.resources["assets/planets/Ice.png"].texture);
+
     planet2.position.x = 500;
     planet2.position.y = 50;
-    container.addChild(planet1);
     container.addChild(planet2);
 
-    planet1.scale.x = 2.5
-    planet1.scale.y = 2.5
+    const lavaSprite =  new PIXI.AnimatedSprite(lavaTextures);
+    lavaSprite.scale = 3;
+    
+    lavaSprite.height = 0
+    lavaSprite.width = 0
+    lavaSprite.visible = true;
+    lavaSprite.scale = 2;
+    lavaSprite.position.set(300, 130)
+    lavaSprite.animationSpeed = 0.15
 
+    container.addChild(lavaSprite);
+    setTimeout(lavaSprite.play, 1000)
     return container;
 }
 

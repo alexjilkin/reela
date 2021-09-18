@@ -34,3 +34,21 @@ export function isClipsCollide(clip1, clip2) {
   return (Math.abs(clip1.centerX - clip2.centerX) < clip1.halfWidth + clip2.halfWidth
   && Math.abs(clip1.centerY - clip2.centerY) < clip1.halfHeight + clip2.halfHeight) 
   }
+  
+  export function generatePaths(path, num) {
+    const paths = []
+    for(let i = 0; i < num; i++) {
+      const zeroNum = 3 - i.toString().length;
+      let numString = ''
+  
+      for(let j = 0; j < zeroNum; j++) {
+          numString += '0'
+      }
+  
+      numString += i.toString();
+  
+      paths.push(`${path}/tile${numString}.png`)
+    }
+
+    return paths
+  }
