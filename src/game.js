@@ -50,7 +50,6 @@ PIXI.loader
 planets.lavaImages.forEach(v => PIXI.loader.add(v))
 dude.preload.forEach(v => PIXI.loader.add(v))
 PIXI.loader.load(setup)
-// setTimeout(setup, 1000)
 
 function setup() {
   backgroundLayer1 = new PIXI.Container()
