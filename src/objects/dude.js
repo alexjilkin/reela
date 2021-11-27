@@ -188,13 +188,5 @@ export function update({isColliding}) {
 
         container.y -= container.vy
     } 
-
-    // if(state === 'jumping') {
-    //     if (container.vx !== 0) {
-    //         setState('walking')
-    //     } else {
-    //         setState('idle')
-    //     }
-    // }
 }
 

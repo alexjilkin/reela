@@ -42,9 +42,9 @@ PIXI.loader
   .add("assets/buildings-bg.png")
   .add("assets/dude.png")
   .add("assets/floor.png")
-  .add("assets/planets/Baren.png")
+  .add("assets/floor/floor.png")
+  .add("assets/floor/project.png")
   .add("assets/planets/Ice.png")
-  .add("assets/planets/Lava.png")
 
 
 planets.lavaImages.forEach(v => PIXI.loader.add(v))

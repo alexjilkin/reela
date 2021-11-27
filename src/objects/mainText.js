@@ -9,7 +9,7 @@ export function init() {
         fill: "white",
     });
 
-    subject = new TypingText('Welcome to Evening City... \nPress Enter near a project to open it', 
+    subject = new TypingText('Hi, my name is Alex Jilkin\nand those are my personal projects.\nPress Enter near a project to open it', 
         3,  style)
     subject.position.set(10, 10)
     return subject

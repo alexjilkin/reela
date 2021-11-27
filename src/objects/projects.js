@@ -27,8 +27,8 @@ let style = new PIXI.TextStyle({
     fill: "green",
   });
 
+const positions = [[-100, 0], [150, -150]]
 export function init() {
-    
     container = new PIXI.Container()
 
     projects.forEach((project, index) => {
@@ -43,7 +43,7 @@ export function init() {
         text.position.set(5, 10)
         projectContainer.addChild(rect)
         projectContainer.addChild(text)
-        projectContainer.position.set(index * 150, 0)
+        projectContainer.position.set(...positions[index])
         container.addChild(projectContainer)
         projectContainers.push(projectContainer)
     })
