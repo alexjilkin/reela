@@ -95,10 +95,7 @@ function setAnimation(type) {
 }
 
 function startWalking() {
-
     setState('walking')
-    
-    
 }
 function stopWalking() {
     setState('idle')
@@ -107,8 +104,6 @@ function stopWalking() {
 export function init() {
     container = new PIXI.Container()
     
-    // container.height = dudeHeight;
-    // container.width = dudeHeight;
     container.vx = 0.00;
     container.vy = 0.00;
     container.position.set(100, 200)
@@ -143,9 +138,6 @@ export function init() {
     // Jumping animation
     animations.jumping = new PIXI.AnimatedSprite(dudeJumpArray);
     animations.jumping.animationSpeed = 0.15
-    // animations.jumping.onLoop = () => {
-    //     setState('idle')
-    // }
 
     animations.jumping.height = dudeHeight
     animations.jumping.width = dudeHeight / ratio
@@ -185,8 +177,11 @@ export function update({isColliding}) {
             setState('idle');
         }
         
-
-        container.y -= container.vy
+        container.y -= container.vy - 1
     } 
+
+    if (!isColliding(container) && dudeCollided) {
+        dudeCollided = false;
+    }
 }
 
